@@ -93,6 +93,11 @@ void setup(void) {
 void loop() {
   timer.timer_run();
   M5.update();
+
+  // Update digital time
+  int min = timer.get_min();
+  int sec = timer.get_sec();
+  
   if (M5.BtnA.wasReleased()) {
     timer.plus_min();
     delay(5);
@@ -102,13 +107,11 @@ void loop() {
     delay(5);
   }
   if (M5.BtnC.wasReleased()) {
-    timer.status_change();
-    delay(5);
+    if (min != 0 || sec != 0) {
+      timer.status_change();
+      delay(5);
+    }
   }
-
-  // Update digital time
-  int min = timer.get_min();
-  int sec = timer.get_sec();
 
   draw_lcd(min, sec);
   if(timer.get_status() == TIMER_STATUS_FINISH) {
